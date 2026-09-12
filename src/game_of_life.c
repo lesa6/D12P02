@@ -1,6 +1,5 @@
 #include <ncurses.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 #define WIDTH 80
 #define HEIGHT 25
@@ -58,7 +57,6 @@ int neighbors_count(int cells[HEIGHT][WIDTH], int row, int cell) {
 
 void game(int cells[HEIGHT][WIDTH], int *life) {
     int cells_new[HEIGHT][WIDTH];
-    int changes = 0;
 
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
@@ -73,15 +71,9 @@ void game(int cells[HEIGHT][WIDTH], int *life) {
 
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
-            if (cells[i][j] != cells_new[i][j]) {
-                changes++;
-            }
             cells[i][j] = cells_new[i][j];
         }
     }
-    // if (changes == 0) {
-    //     *life = 0; 
-    // }
 }
 
 int input(int cells[HEIGHT][WIDTH]){
