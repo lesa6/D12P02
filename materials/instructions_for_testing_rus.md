@@ -45,3 +45,4 @@
 
   Не рекомендуется использовать _valgrind_ на OS X, вместо нее лучше использовать [_leaks_](#leaks-для-macos).
 
+cppcheck --enable=all --suppress=missingIncludeSystem game_of_life.c
