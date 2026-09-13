@@ -5,13 +5,13 @@
 #define HEIGHT 25
 #define SPEED_STEP 50
 
-void game(int cells[HEIGHT][WIDTH], int *life);
+void game(int cells[HEIGHT][WIDTH]);
 int neighbors_count(int cells[HEIGHT][WIDTH], int row, int cell);
 void draw(int cells[HEIGHT][WIDTH]);
 int input(int cells[HEIGHT][WIDTH]);
-void change_speed(char button, int *speed, int *life);
+void change_speed(int button, int *speed, int *life);
 
-int main(){
+int main() {
     int cells[HEIGHT][WIDTH];
     int speed = 300;
     int life = 1;
@@ -22,23 +22,22 @@ int main(){
         if (freopen("/dev/tty", "r", stdin) == NULL)
             printf("n/a");
         else {
-                initscr();
-                noecho();
-                cbreak();
-                curs_set(0);
-                    
-                while(life){
-                    draw(cells);
-                    timeout(speed);
-                    game(cells, &life);
+            initscr();
+            noecho();
+            cbreak();
+            curs_set(0);
 
-                    char button = getch();
-                    change_speed(button, &speed, &life);
-                }
-                endwin();
+            while (life) {
+                draw(cells);
+                timeout(speed);
+                game(cells);
+
+                int button = getch();
+                change_speed(button, &speed, &life);
+            }
+            endwin();
         }
     }
-
 
     return 0;
 }
@@ -55,7 +54,7 @@ int neighbors_count(int cells[HEIGHT][WIDTH], int row, int cell) {
     return count;
 }
 
-void game(int cells[HEIGHT][WIDTH], int *life) {
+void game(int cells[HEIGHT][WIDTH]) {
     int cells_new[HEIGHT][WIDTH];
 
     for (int i = 0; i < HEIGHT; i++) {
@@ -76,15 +75,15 @@ void game(int cells[HEIGHT][WIDTH], int *life) {
     }
 }
 
-int input(int cells[HEIGHT][WIDTH]){
+int input(int cells[HEIGHT][WIDTH]) {
     int result = 1;
-    
+
     for (int i = 0; i < HEIGHT && result == 1; i++) {
         for (int j = 0; j < WIDTH && result == 1; j++) {
-            if(scanf("%1d", &cells[i][j]) != 1){
+            if (scanf("%1d", &cells[i][j]) != 1) {
                 result = 0;
             }
-            if(cells[i][j] != 0 && cells[i][j] != 1){
+            if (cells[i][j] != 0 && cells[i][j] != 1) {
                 result = 0;
             }
         }
@@ -92,7 +91,7 @@ int input(int cells[HEIGHT][WIDTH]){
     return result;
 }
 
-void draw(int cells[HEIGHT][WIDTH]){
+void draw(int cells[HEIGHT][WIDTH]) {
     clear();
 
     for (int i = 0; i < HEIGHT; i++) {
@@ -104,19 +103,20 @@ void draw(int cells[HEIGHT][WIDTH]){
             }
         }
     }
+    refresh();
 }
 
-void change_speed(char button, int *speed, int *life) {
-    if (button == 'a' || button == 'A') {  
+void change_speed(int button, int *speed, int *life) {
+    if (button == 'a' || button == 'A') {
         if (*speed - SPEED_STEP >= 10) {
             *speed -= SPEED_STEP;
         }
-    } else if (button == 'z' || button == 'Z') {  
+    } else if (button == 'z' || button == 'Z') {
         if (*speed + SPEED_STEP <= 2000) {
             *speed += SPEED_STEP;
         }
     }
-          
+
     if (button == ' ') {
         *life = 0;
     }
